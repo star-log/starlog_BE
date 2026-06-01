@@ -40,4 +40,11 @@ public enum Star {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 별자리를 찾지 못했습니다. 그 별자리의 이름은 바로 " + nameJa));
     }
+
+    public static String findStarNameByOriginalName(String nameJa) {
+        return Arrays.stream(Star.values())
+                .filter(star -> nameJa.contains(star.nameJa))
+                .findAny()
+                .toString();
+    }
 }
