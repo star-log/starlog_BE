@@ -26,6 +26,7 @@ dependencies {
 	testCompileOnly("org.projectlombok:lombok")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testAnnotationProcessor("org.projectlombok:lombok")
+	implementation("org.jsoup:jsoup:1.18.1")
 }
 
 tasks.withType<Test> {
