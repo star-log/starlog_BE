@@ -36,9 +36,10 @@ public class Fortune {
 
     protected Fortune() {}
 
-    public Fortune(LocalDate today, Star star, String descriptionJa, String luckyColorJa, String luckyKeyJa, String descriptionKo, String luckyColorKo, String luckyKeyKo, int moneyLuckyScore, int loveLuckyScore, int workLuckyScore, int healthLuckyScore) {
+    public Fortune(LocalDate today, Star star, int rank, String descriptionJa, String luckyColorJa, String luckyKeyJa, String descriptionKo, String luckyColorKo, String luckyKeyKo, int moneyLuckyScore, int loveLuckyScore, int workLuckyScore, int healthLuckyScore) {
         this.date = today;
         this.star = star;
+        this.rank = rank;
         this.descriptionJa = descriptionJa;
         this.luckyColorJa = luckyColorJa;
         this.luckyKeyJa = luckyKeyJa;

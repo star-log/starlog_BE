@@ -36,8 +36,7 @@ public class SyncTodayFortuneDataService {
             int rank = 1;
             for (Element rankItem : rankItems) {
                 String starNameJa = rankItem.select("span").text().trim();
-                String starNameKo = Star.findStarNameByOriginalName(starNameJa);
-                rankMap.put(starNameKo, rank);
+                rankMap.put(starNameJa, rank);
                 rank++;
             }
 
@@ -53,6 +52,8 @@ public class SyncTodayFortuneDataService {
                 int workLuckyScore = starDetail.select(".icon-work").size();
                 int healthLuckyScore = starDetail.select(".icon-health").size();
 
+                int starRank = rankMap.get(starNameJa);
+
                 // 번역
                 Star star = Star.findStarByOriginalName(starNameJa);
                 String descriptionKo = translateJaToKo(descriptionJa);
@@ -62,6 +63,7 @@ public class SyncTodayFortuneDataService {
                 Fortune fortune = new Fortune(
                         today.toLocalDate(),
                         star,
+                        starRank,
                         descriptionJa,
                         luckyColorJa,
                         luckyKeyJa,
