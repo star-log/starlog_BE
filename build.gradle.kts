@@ -27,6 +27,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testAnnotationProcessor("org.projectlombok:lombok")
 	implementation("org.jsoup:jsoup:1.18.1")
+	implementation("com.deepl.api:deepl-java:1.8.0")
 }
 
 tasks.withType<Test> {
