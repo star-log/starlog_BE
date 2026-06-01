@@ -5,7 +5,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,10 +28,7 @@ public class SyncTodayFortuneDataService {
                     .get();
 
             LocalDateTime today = LocalDateTime.now();
-            String siteDateText = doc.select(".ttl-area").first().text();
-            if (siteDateText.contains(today.getMonthValue() + "月" + today.getDayOfMonth() + "日")) {
-                System.out.println("아직 오늘의 운세가 올라오지 않았습니다. 현재일시: " + today);
-            }
+            verifyIsToday(doc, today);
 
             // rank 구하기
             Map<String, Integer> rankMap = new HashMap<>();
@@ -84,6 +80,13 @@ public class SyncTodayFortuneDataService {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void verifyIsToday(Document doc, LocalDateTime today) {
+        String siteDateText = doc.select(".ttl-area").first().text();
+        if (siteDateText.contains(today.getMonthValue() + "月" + today.getDayOfMonth() + "日")) {
+            System.out.println("아직 오늘의 운세가 올라오지 않았습니다. 현재일시: " + today);
         }
     }
 }
