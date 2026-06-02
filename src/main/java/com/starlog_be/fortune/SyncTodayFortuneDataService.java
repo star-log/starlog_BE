@@ -42,30 +42,34 @@ public class SyncTodayFortuneDataService {
 
             List<String> koTexts = translateJaTextsToKoTexts(translateSource);
 
-            int koTextsIndex = 0;
-            List<Fortune> fortuneList = new ArrayList<>();
-            for (Element starDetail : starDetails) {
-                String starNameJa = starDetail.selectFirst(".seiza-txt").ownText().trim();
-
-                Fortune fortune = new Fortune(
-                        today.toLocalDate(),
-                        Star.findStarByOriginalName(starNameJa),
-                        rankMap.get(starNameJa),
-                        koTexts.get(koTextsIndex++),
-                        koTexts.get(koTextsIndex++),
-                        koTexts.get(koTextsIndex++),
-                        starDetail.select(".icon-money").size(),
-                        starDetail.select(".icon-love").size(),
-                        starDetail.select(".icon-work").size(),
-                        starDetail.select(".icon-health").size()
-                );
-                fortuneList.add(fortune);
-            }
-            fortuneRepository.saveAll(fortuneList);
+            saveFortunes(starDetails, today, rankMap, koTexts);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void saveFortunes(Elements starDetails, LocalDateTime today, Map<String, Integer> rankMap, List<String> koTexts) {
+        int koTextsIndex = 0;
+        List<Fortune> fortuneList = new ArrayList<>();
+        for (Element starDetail : starDetails) {
+            String starNameJa = starDetail.selectFirst(".seiza-txt").ownText().trim();
+
+            Fortune fortune = new Fortune(
+                    today.toLocalDate(),
+                    Star.findStarByOriginalName(starNameJa),
+                    rankMap.get(starNameJa),
+                    koTexts.get(koTextsIndex++),
+                    koTexts.get(koTextsIndex++),
+                    koTexts.get(koTextsIndex++),
+                    starDetail.select(".icon-money").size(),
+                    starDetail.select(".icon-love").size(),
+                    starDetail.select(".icon-work").size(),
+                    starDetail.select(".icon-health").size()
+            );
+            fortuneList.add(fortune);
+        }
+        fortuneRepository.saveAll(fortuneList);
     }
 
     private List<String> getTranslateSource(Elements starDetails) {
