@@ -5,7 +5,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -33,20 +32,16 @@ public class SyncTodayFortuneDataService {
             LocalDateTime today = LocalDateTime.now();
             verifyIsToday(doc, today);
 
-            // rank 구하기
             Map<String, Integer> rankMap = getRankMap(doc);
 
-            // 별자리별상세운세
             Elements starDetails = doc.select(".seiza-area > .seiza-box");
 
-            // 번역할 얘들만 수집
             List<String> translateSource = getTranslateSource(starDetails);
 
             List<String> koTexts = translateJaTextsToKoTexts(translateSource);
 
             int koTextsIndex = 0;
             List<Fortune> fortuneList = new ArrayList<>();
-
             for (Element starDetail : starDetails) {
                 String starNameJa = starDetail.selectFirst(".seiza-txt").ownText().trim();
                 int moneyLuckyScore = starDetail.select(".icon-money").size();
