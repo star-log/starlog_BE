@@ -15,7 +15,7 @@ public class TranslationService {
         this.translator = new Translator("{deepl.api-key}");
     }
 
-    public static final String translateJaToKo(String originalText) {
+    public static String translateJaToKo(String originalText) {
         if (originalText == null || originalText.isBlank()) { return ""; }
 
         try {
