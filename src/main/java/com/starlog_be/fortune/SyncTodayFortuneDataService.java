@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -31,14 +32,7 @@ public class SyncTodayFortuneDataService {
             verifyIsToday(doc, today);
 
             // rank 구하기
-            Map<String, Integer> rankMap = new HashMap<>();
-            Elements rankItems = doc.select("ul.rank-box > li");
-            int rank = 1;
-            for (Element rankItem : rankItems) {
-                String starNameJa = rankItem.select("span").text().trim();
-                rankMap.put(starNameJa, rank);
-                rank++;
-            }
+            Map<String, Integer> rankMap = getRankMap(doc);
 
             // 별자리별상세운세
             Elements starDetails = doc.select(".seiza-area > .seiza-box");
@@ -83,6 +77,18 @@ public class SyncTodayFortuneDataService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Map<String, Integer> getRankMap(Document doc) {
+        Map<String, Integer> rankMap = new HashMap<>();
+        Elements rankItems = doc.select("ul.rank-box > li");
+        int rank = 1;
+        for (Element rankItem : rankItems) {
+            String starNameJa = rankItem.select("span").text().trim();
+            rankMap.put(starNameJa, rank);
+            rank++;
+        }
+        return rankMap;
     }
 
     private void verifyIsToday(Document doc, LocalDateTime today) {
