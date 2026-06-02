@@ -46,33 +46,21 @@ public class SyncTodayFortuneDataService {
             List<Fortune> fortuneList = new ArrayList<>();
             for (Element starDetail : starDetails) {
                 String starNameJa = starDetail.selectFirst(".seiza-txt").ownText().trim();
-                int moneyLuckyScore = starDetail.select(".icon-money").size();
-                int loveLuckyScore = starDetail.select(".icon-love").size();
-                int workLuckyScore = starDetail.select(".icon-work").size();
-                int healthLuckyScore = starDetail.select(".icon-health").size();
-
-                Star star = Star.findStarByOriginalName(starNameJa);
-                int starRank = rankMap.get(starNameJa);
-
-                String descriptionKo = koTexts.get(koTextsIndex++);
-                String luckyColorKo = koTexts.get(koTextsIndex++);
-                String luckyKeyKo = koTexts.get(koTextsIndex++);
 
                 Fortune fortune = new Fortune(
                         today.toLocalDate(),
-                        star,
-                        starRank,
-                        descriptionKo,
-                        luckyColorKo,
-                        luckyKeyKo,
-                        moneyLuckyScore,
-                        loveLuckyScore,
-                        workLuckyScore,
-                        healthLuckyScore
+                        Star.findStarByOriginalName(starNameJa),
+                        rankMap.get(starNameJa),
+                        koTexts.get(koTextsIndex++),
+                        koTexts.get(koTextsIndex++),
+                        koTexts.get(koTextsIndex++),
+                        starDetail.select(".icon-money").size(),
+                        starDetail.select(".icon-love").size(),
+                        starDetail.select(".icon-work").size(),
+                        starDetail.select(".icon-health").size()
                 );
                 fortuneList.add(fortune);
             }
-
             fortuneRepository.saveAll(fortuneList);
 
         } catch (IOException e) {
