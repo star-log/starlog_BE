@@ -5,14 +5,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static com.starlog_be.TranslationService.translateJaToKo;
+import static com.starlog_be.TranslationService.translateJaTextsToKoTexts;
 
 @Service
 @RequiredArgsConstructor
@@ -35,31 +38,33 @@ public class SyncTodayFortuneDataService {
 
             // 별자리별상세운세
             Elements starDetails = doc.select(".seiza-area > .seiza-box");
+
+            // 번역할 얘들만 수집
+            List<String> translateSource = getTranslateSource(starDetails);
+
+            List<String> koTexts = translateJaTextsToKoTexts(translateSource);
+
+            int koTextsIndex = 0;
+            List<Fortune> fortuneList = new ArrayList<>();
+
             for (Element starDetail : starDetails) {
                 String starNameJa = starDetail.selectFirst(".seiza-txt").ownText().trim();
-                String descriptionJa = starDetail.select(".read").text();
-                String luckyColorJa = starDetail.selectFirst(".lucky-color-txt").nextSibling().toString().replace(":", "").trim();
-                String luckyKeyJa = starDetail.selectFirst(".key-txt").nextSibling().toString().replace(":", "").trim();
                 int moneyLuckyScore = starDetail.select(".icon-money").size();
                 int loveLuckyScore = starDetail.select(".icon-love").size();
                 int workLuckyScore = starDetail.select(".icon-work").size();
                 int healthLuckyScore = starDetail.select(".icon-health").size();
 
+                Star star = Star.findStarByOriginalName(starNameJa);
                 int starRank = rankMap.get(starNameJa);
 
-                // 번역
-                Star star = Star.findStarByOriginalName(starNameJa);
-                String descriptionKo = translateJaToKo(descriptionJa);
-                String luckyColorKo = translateJaToKo(luckyColorJa);
-                String luckyKeyKo = translateJaToKo(luckyKeyJa);
+                String descriptionKo = koTexts.get(koTextsIndex++);
+                String luckyColorKo = koTexts.get(koTextsIndex++);
+                String luckyKeyKo = koTexts.get(koTextsIndex++);
 
                 Fortune fortune = new Fortune(
                         today.toLocalDate(),
                         star,
                         starRank,
-                        descriptionJa,
-                        luckyColorJa,
-                        luckyKeyJa,
                         descriptionKo,
                         luckyColorKo,
                         luckyKeyKo,
@@ -68,14 +73,28 @@ public class SyncTodayFortuneDataService {
                         workLuckyScore,
                         healthLuckyScore
                 );
-
-                fortuneRepository.save(fortune);
+                fortuneList.add(fortune);
             }
 
+            fortuneRepository.saveAll(fortuneList);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<String> getTranslateSource(Elements starDetails) {
+        List<String> translateSource = new ArrayList<>();
+        for (Element starDetail : starDetails) {
+            String descriptionJa = starDetail.select(".read").text();
+            String luckyColorJa = starDetail.selectFirst(".lucky-color-txt").nextSibling().toString().replace(":", "").trim();
+            String luckyKeyJa = starDetail.selectFirst(".key-txt").nextSibling().toString().replace(":", "").trim();
+
+            translateSource.add(descriptionJa);
+            translateSource.add(luckyColorJa);
+            translateSource.add(luckyKeyJa);
+        }
+        return translateSource;
     }
 
     private Map<String, Integer> getRankMap(Document doc) {
