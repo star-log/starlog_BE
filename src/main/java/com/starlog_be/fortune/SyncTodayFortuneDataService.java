@@ -79,8 +79,9 @@ public class SyncTodayFortuneDataService {
     }
 
     private Map<String, Integer> getRankMap(Document doc) {
-        Map<String, Integer> rankMap = new HashMap<>();
         Elements rankItems = doc.select("ul.rank-box > li");
+
+        Map<String, Integer> rankMap = new HashMap<>();
         int rank = 1;
         for (Element rankItem : rankItems) {
             String starNameJa = rankItem.select("span").text().trim();
