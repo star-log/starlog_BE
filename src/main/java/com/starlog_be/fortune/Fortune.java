@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 public class Fortune {
@@ -21,13 +20,9 @@ public class Fortune {
 
     private int rank;
 
-    private String descriptionJa;
-    private String luckyColorJa;
-    private String luckyKeyJa;
-
-    private String descriptionKo;
-    private String luckyColorKo;
-    private String luckyKeyKo;
+    private String description;
+    private String luckyColor;
+    private String luckyKey;
 
     private int moneyLuckyScore;
     private int loveLuckyScore;
@@ -36,16 +31,14 @@ public class Fortune {
 
     protected Fortune() {}
 
-    public Fortune(LocalDate today, Star star, int rank, String descriptionJa, String luckyColorJa, String luckyKeyJa, String descriptionKo, String luckyColorKo, String luckyKeyKo, int moneyLuckyScore, int loveLuckyScore, int workLuckyScore, int healthLuckyScore) {
+    public Fortune(LocalDate today, Star star, int rank, String description, String luckyColor, String luckyKey, int moneyLuckyScore, int loveLuckyScore, int workLuckyScore, int healthLuckyScore) {
         this.date = today;
         this.star = star;
         this.rank = rank;
-        this.descriptionJa = descriptionJa;
-        this.luckyColorJa = luckyColorJa;
-        this.luckyKeyJa = luckyKeyJa;
-        this.descriptionKo = descriptionKo;
-        this.luckyColorKo = luckyColorKo;
-        this.luckyKeyJa = luckyKeyKo;
+
+        this.description = description;
+        this.luckyColor = luckyColor;
+        this.luckyKey = luckyKey;
         this.moneyLuckyScore = moneyLuckyScore;
         this.loveLuckyScore = loveLuckyScore;
         this.workLuckyScore = workLuckyScore;
