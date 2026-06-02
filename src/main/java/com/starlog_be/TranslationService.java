@@ -1,7 +1,10 @@
 package com.starlog_be;
 
+import com.deepl.api.TextResult;
 import com.deepl.api.Translator;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TranslationService {
@@ -20,6 +23,20 @@ public class TranslationService {
         } catch (Exception e) {
             System.out.println("번역 중 에러 발생. 원문 반환.");
             return originalText;
+        }
+    }
+
+    public static List<String> translateJaTextsToKoTexts(List<String> originalTexts) {
+        try {
+            List<TextResult> resultTexts = translator.translateText(originalTexts, "JA", "KO");
+
+            return resultTexts.stream()
+                    .map(TextResult::getText)
+                    .toList();
+
+        } catch (Exception e) {
+            System.out.println("번역 중 에러 발생. 원문 반환.");
+            return originalTexts;
         }
     }
 }
