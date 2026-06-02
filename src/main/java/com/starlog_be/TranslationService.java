@@ -12,7 +12,7 @@ public class TranslationService {
     private static Translator translator;
 
     public TranslationService() {
-        this.translator = new Translator("{deepl.api-key}");
+        translator = new Translator("{deepl.api-key}");
     }
 
     public static String translateJaToKo(String originalText) {
