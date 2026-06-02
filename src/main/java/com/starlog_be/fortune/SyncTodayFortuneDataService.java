@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class SyncTodayFortuneDataService {
     private final FortuneRepository fortuneRepository;
     private final FortuneConfig fortuneConfig;
 
+    @Transactional
     public void execute() {
         try {
             Document doc = Jsoup.connect(fortuneConfig.fortuneUrl())
