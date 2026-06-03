@@ -35,23 +35,23 @@ public class SyncTodayFortuneDataService {
             List<String> translateSource = fortuneRaw.getTranslateSource();
             List<String> koTexts = translateJaTextsToKoTexts(translateSource);
 
-            saveFortunes(starDetails, today, rankMap, koTexts);
+            saveFortunes(fortuneRaw, koTexts);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void saveFortunes(Elements starDetails, LocalDateTime today, Map<String, Integer> rankMap, List<String> koTexts) {
+    private void saveFortunes(FortuneRaw fortuneRaw, List<String> koTexts) {
         int koTextsIndex = 0;
         List<Fortune> fortuneList = new ArrayList<>();
-        for (Element starDetail : starDetails) {
+        for (Element starDetail : fortuneRaw.starDetails()) {
             String starNameJa = starDetail.selectFirst(".seiza-txt").ownText().trim();
 
             Fortune fortune = new Fortune(
-                    today.toLocalDate(),
+                    fortuneRaw.today().toLocalDate(),
                     Star.findStarByOriginalName(starNameJa),
-                    rankMap.get(starNameJa),
+                    fortuneRaw.rankMap().get(starNameJa),
                     koTexts.get(koTextsIndex++),
                     koTexts.get(koTextsIndex++),
                     koTexts.get(koTextsIndex++),
