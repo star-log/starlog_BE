@@ -10,20 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FortuneRaw {
-
-    private final Map<String, Integer> rankMap;
-    private final Elements starDetails;
-
-    public FortuneRaw(Map<String, Integer> rankMap, Elements starDetails) {
-        this.rankMap = rankMap;
-        this.starDetails = starDetails;
-    }
+public record FortuneRaw(
+        Map<String, Integer> rankMap,
+        Elements starDetails,
+        LocalDateTime today
+) {
 
     public static FortuneRaw of(Document doc, LocalDateTime today) {
         verifyIsToday(doc, today);
         Elements starDetails = doc.select(".seiza-area > .seiza-box");
-        return new FortuneRaw(getRankMap(doc), starDetails);
+        return new FortuneRaw(getRankMap(doc), starDetails, today);
     }
 
     private static void verifyIsToday(Document doc, LocalDateTime today) {
