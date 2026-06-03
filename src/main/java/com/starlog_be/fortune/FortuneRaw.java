@@ -46,8 +46,8 @@ public record FortuneRaw(
         List<String> translateSource = new ArrayList<>();
         for (Element starDetail : starDetails) {
             String descriptionJa = starDetail.select(".read").text();
-            String luckyColorJa = starDetail.selectFirst(".lucky-color-txt").nextSibling().toString().replace(":", "").trim();
-            String luckyKeyJa = starDetail.selectFirst(".key-txt").nextSibling().toString().replace(":", "").trim();
+            String luckyColorJa = starDetail.selectFirst(".lucky-color-txt").nextSibling().toString().replaceAll("^.*?[:：]", "").trim();
+            String luckyKeyJa = starDetail.selectFirst(".key-txt").nextSibling().toString().replaceAll("^.*?[:：]", "").trim();
 
             translateSource.add(descriptionJa);
             translateSource.add(luckyColorJa);
