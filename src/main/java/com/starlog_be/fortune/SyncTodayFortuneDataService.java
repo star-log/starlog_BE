@@ -32,10 +32,7 @@ public class SyncTodayFortuneDataService {
                     .get();
             FortuneRaw fortuneRaw = FortuneRaw.of(doc, LocalDateTime.now());
 
-//            Map<String, Integer> rankMap = getRankMap(doc);
-//
-//            Elements starDetails = doc.select(".seiza-area > .seiza-box");
-//            List<String> translateSource = getTranslateSource(starDetails);
+            List<String> translateSource = fortuneRaw.getTranslateSource();
             List<String> koTexts = translateJaTextsToKoTexts(translateSource);
 
             saveFortunes(starDetails, today, rankMap, koTexts);
@@ -67,32 +64,4 @@ public class SyncTodayFortuneDataService {
         }
         fortuneRepository.saveAll(fortuneList);
     }
-
-    private List<String> getTranslateSource(Elements starDetails) {
-        List<String> translateSource = new ArrayList<>();
-        for (Element starDetail : starDetails) {
-            String descriptionJa = starDetail.select(".read").text();
-            String luckyColorJa = starDetail.selectFirst(".lucky-color-txt").nextSibling().toString().replace(":", "").trim();
-            String luckyKeyJa = starDetail.selectFirst(".key-txt").nextSibling().toString().replace(":", "").trim();
-
-            translateSource.add(descriptionJa);
-            translateSource.add(luckyColorJa);
-            translateSource.add(luckyKeyJa);
-        }
-        return translateSource;
-    }
-
-    private Map<String, Integer> getRankMap(Document doc) {
-        Elements rankItems = doc.select("ul.rank-box > li");
-
-        Map<String, Integer> rankMap = new HashMap<>();
-        int rank = 1;
-        for (Element rankItem : rankItems) {
-            String starNameJa = rankItem.select("span").text().trim();
-            rankMap.put(starNameJa, rank);
-            rank++;
-        }
-        return rankMap;
-    }
-
 }
