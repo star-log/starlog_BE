@@ -2,6 +2,7 @@ package com.starlog_be;
 
 import com.deepl.api.TextResult;
 import com.deepl.api.Translator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +12,8 @@ public class TranslationService {
 
     private static Translator translator;
 
-    public TranslationService() {
-        translator = new Translator("{deepl.api-key}");
+    public TranslationService(@Value("${deepl.api-key}") String apiKey) {
+        translator = new Translator(apiKey);
     }
 
     public static String translateJaToKo(String originalText) {
