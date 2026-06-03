@@ -28,6 +28,8 @@ dependencies {
 	testAnnotationProcessor("org.projectlombok:lombok")
 	implementation("org.jsoup:jsoup:1.18.1")
 	implementation("com.deepl.api:deepl-java:1.8.0")
+	implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly ("com.mysql:mysql-connector-j")
 }
 
 tasks.withType<Test> {
