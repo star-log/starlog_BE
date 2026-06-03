@@ -18,7 +18,7 @@ public class Fortune {
 
     private Star star;
 
-    private int rank;
+    private int starRank;
 
     private String description;
     private String luckyColor;
@@ -31,10 +31,10 @@ public class Fortune {
 
     protected Fortune() {}
 
-    public Fortune(LocalDate today, Star star, int rank, String description, String luckyColor, String luckyKey, int moneyLuckyScore, int loveLuckyScore, int workLuckyScore, int healthLuckyScore) {
+    public Fortune(LocalDate today, Star star, int starRank, String description, String luckyColor, String luckyKey, int moneyLuckyScore, int loveLuckyScore, int workLuckyScore, int healthLuckyScore) {
         this.date = today;
         this.star = star;
-        this.rank = rank;
+        this.starRank = starRank;
 
         this.description = description;
         this.luckyColor = luckyColor;
