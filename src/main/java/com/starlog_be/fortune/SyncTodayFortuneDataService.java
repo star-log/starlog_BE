@@ -30,16 +30,12 @@ public class SyncTodayFortuneDataService {
                     .userAgent(fortuneConfig.userAgent())
                     .timeout(fortuneConfig.timeout())
                     .get();
+            FortuneRaw fortuneRaw = FortuneRaw.of(doc, LocalDateTime.now());
 
-            LocalDateTime today = LocalDateTime.now();
-            verifyIsToday(doc, today);
-
-            Map<String, Integer> rankMap = getRankMap(doc);
-
-            Elements starDetails = doc.select(".seiza-area > .seiza-box");
-
-            List<String> translateSource = getTranslateSource(starDetails);
-
+//            Map<String, Integer> rankMap = getRankMap(doc);
+//
+//            Elements starDetails = doc.select(".seiza-area > .seiza-box");
+//            List<String> translateSource = getTranslateSource(starDetails);
             List<String> koTexts = translateJaTextsToKoTexts(translateSource);
 
             saveFortunes(starDetails, today, rankMap, koTexts);
@@ -99,10 +95,4 @@ public class SyncTodayFortuneDataService {
         return rankMap;
     }
 
-    private void verifyIsToday(Document doc, LocalDateTime today) {
-        String siteDateText = doc.select(".ttl-area").first().text();
-        if (siteDateText.contains(today.getMonthValue() + "月" + today.getDayOfMonth() + "日")) {
-            System.out.println("아직 오늘의 운세가 올라오지 않았습니다. 현재일시: " + today);
-        }
-    }
 }
