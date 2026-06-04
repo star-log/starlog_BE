@@ -1,33 +1,32 @@
-name: Gemini PR Code Review
+name: Gemini AI Code Review
 
 on:
   pull_request:
     types: [opened, synchronize]
 
-permissions:
-  contents: read
-  pull-requests: write
-
 jobs:
   review:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Gemini AI Code Review
-        uses: google-github-actions
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          api_key: ${{ secrets.GEMINI_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          model: "gemini-1.5-pro"
-          language: "Korean"
-          prompt: |
-            당신은 시니어 백엔드 개발자이자 코드 리뷰어입니다. 
-            변경되거나 추가된 스프링 부트/자바 코드를 리뷰하고 다음 사항을 피드백해 주세요:
-            1. 잠재적인 버그나 예외 처리(NullPointer 등) 누락 여부
-            2. 성능 개선 포인트 및 리팩토링 제안
-            3. 가독성 및 코드 컨벤션 준수 여부
-            긍정적인 부분은 칭찬하고, 개선점은 명확한 코드 예시와 함께 한국어로 친절하게 설명해 주세요.
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install google-generativeai
+
+      - name: Run Review Script
+        shell: python
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          import os, google.generativeai as genai
+          print("제미나이 리뷰 스크립트 실행 중...")

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: starlog_BE
+  datasource:
+    url: ${DATA_SOURCE_URL}
+    username: ${DATA_SOURCE_USERNAME}
+    password: ${DATA_SOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+deepl:
+  api-key: ${DEEPL_API_KEY}
+
+fortune:
+  fortune-url: ${FORTUNE_URL}
+  timeout: ${TIMEOUT}
+  user-agent: ${USER_AGENT}
