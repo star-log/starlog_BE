@@ -1,4 +1,4 @@
-package com.starlog_be.fortune;
+package com.starlog_be.fortune.dto;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

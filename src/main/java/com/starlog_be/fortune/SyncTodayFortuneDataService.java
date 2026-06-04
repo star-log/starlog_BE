@@ -1,5 +1,9 @@
 package com.starlog_be.fortune;
 
+import com.starlog_be.fortune.dto.FortuneConfig;
+import com.starlog_be.fortune.dto.FortuneRaw;
+import com.starlog_be.fortune.domain.Fortune;
+import com.starlog_be.fortune.domain.Star;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.starlog_be.TranslationService.translateJaTextsToKoTexts;
+import static com.starlog_be.global.TranslationService.translateJaTextsToKoTexts;
 
 @Service
 @RequiredArgsConstructor

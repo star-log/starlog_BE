@@ -1,5 +1,6 @@
 package com.starlog_be.fortune;
 
+import com.starlog_be.fortune.domain.Fortune;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

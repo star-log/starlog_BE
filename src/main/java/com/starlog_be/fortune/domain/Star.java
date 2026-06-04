@@ -1,4 +1,4 @@
-package com.starlog_be.fortune;
+package com.starlog_be.fortune.domain;
 
 import java.util.Arrays;
 

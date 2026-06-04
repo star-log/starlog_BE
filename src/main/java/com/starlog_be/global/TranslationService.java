@@ -1,4 +1,4 @@
-package com.starlog_be;
+package com.starlog_be.global;
 
 import com.deepl.api.TextResult;
 import com.deepl.api.Translator;

@@ -1,4 +1,4 @@
-package com.starlog_be.fortune;
+package com.starlog_be.fortune.dto;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
