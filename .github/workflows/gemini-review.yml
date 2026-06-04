@@ -12,8 +12,11 @@ jobs:
   review:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Gemini AI Code Review
-        uses: anc95/gemini-code-review@main
+        uses: highstorm/gemini-review@main
         with:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
