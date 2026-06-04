@@ -42,7 +42,7 @@ public record FortuneRaw(
         return rankMap;
     }
 
-    List<String> getTranslateSource() {
+    public List<String> getTranslateSource() {
         List<String> translateSource = new ArrayList<>();
         for (Element starDetail : starDetails) {
             String descriptionJa = starDetail.select(".read").text();
