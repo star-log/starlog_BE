@@ -52,9 +52,7 @@ public class SyncTodayFortuneDataService {
         try {
             Client client = Client.builder().apiKey(fortuneConfig.apiKey()).build();
             GenerateContentConfig config = GenerateContentConfig.builder().responseMimeType("application/json").build();
-            String response = client.models.generateContent(fortuneConfig.model(), fortuneConfig.prompt(), config).text();
-            System.out.println(response);
-            return response;
+            return client.models.generateContent(fortuneConfig.model(), fortuneConfig.prompt(), config).text();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
