@@ -19,7 +19,6 @@ public class SyncTodayFortuneDataService {
     private final FortuneRepository fortuneRepository;
     private final FortuneConfig fortuneConfig;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private String response;
 
     @Transactional
     public void execute() {
