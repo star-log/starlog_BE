@@ -2,10 +2,10 @@ package com.starlog_be.fortune;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentConfig;
+import com.starlog_be.fortune.config.FortuneConfig;
 import com.starlog_be.fortune.domain.Fortune;
 import com.starlog_be.fortune.domain.Star;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.core.type.TypeReference;

@@ -1,4 +1,4 @@
-package com.starlog_be.fortune;
+package com.starlog_be.fortune.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
