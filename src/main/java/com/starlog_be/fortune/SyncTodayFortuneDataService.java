@@ -5,6 +5,7 @@ import com.google.genai.types.GenerateContentConfig;
 import com.starlog_be.fortune.domain.Fortune;
 import com.starlog_be.fortune.domain.Star;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.core.type.TypeReference;
@@ -29,7 +30,13 @@ public class SyncTodayFortuneDataService {
                 new TypeReference<List<FortuneRaw>>() {}
         );
 
-        List<Fortune> fortunes = fortuneRaws.stream()
+        List<Fortune> fortunes = getFortunes(fortuneRaws, today);
+
+        fortuneRepository.saveAll(fortunes);
+    }
+
+    private List<Fortune> getFortunes(List<FortuneRaw> fortuneRaws, LocalDate today) {
+        return fortuneRaws.stream()
                 .map(raw -> new Fortune(
                         today,
                         Star.findByName(raw.starName()),
@@ -43,8 +50,6 @@ public class SyncTodayFortuneDataService {
                         raw.healthScore()
                 ))
                 .toList();
-
-        fortuneRepository.saveAll(fortunes);
     }
 
     private String getFortuneRaw() {
