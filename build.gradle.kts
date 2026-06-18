@@ -28,6 +28,7 @@ dependencies {
 	testAnnotationProcessor("org.projectlombok:lombok")
 	implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly ("com.mysql:mysql-connector-j")
+	implementation("com.google.genai:google-genai:1.0.0")
 }
 
 tasks.withType<Test> {
