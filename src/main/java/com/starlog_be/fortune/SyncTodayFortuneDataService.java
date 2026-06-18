@@ -31,7 +31,6 @@ public class SyncTodayFortuneDataService {
         );
 
         List<Fortune> fortunes = getFortunes(fortuneRaws, today);
-
         fortuneRepository.saveAll(fortunes);
     }
 
