@@ -1,68 +1,63 @@
 package com.starlog_be.fortune;
 
-import com.starlog_be.fortune.dto.FortuneConfig;
-import com.starlog_be.fortune.dto.FortuneRaw;
+import com.google.genai.Client;
+import com.google.genai.types.GenerateContentConfig;
+import com.starlog_be.fortune.config.FortuneConfig;
 import com.starlog_be.fortune.domain.Fortune;
 import com.starlog_be.fortune.domain.Star;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
-
-import static com.starlog_be.global.TranslationService.translateJaTextsToKoTexts;
 
 @Service
 @RequiredArgsConstructor
 public class SyncTodayFortuneDataService {
     private final FortuneRepository fortuneRepository;
     private final FortuneConfig fortuneConfig;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Transactional
     public void execute() {
-        try {
-            Document doc = Jsoup.connect(fortuneConfig.fortuneUrl())
-                    .userAgent(fortuneConfig.userAgent())
-                    .timeout(fortuneConfig.timeout())
-                    .get();
-            FortuneRaw fortuneRaw = FortuneRaw.of(doc, LocalDateTime.now());
+        LocalDate today = LocalDate.now();
+        String fortuneRaw = getFortuneRaw();
+        List<FortuneRaw> fortuneRaws = objectMapper.readValue(
+                fortuneRaw,
+                new TypeReference<List<FortuneRaw>>() {}
+        );
 
-            List<String> translateSource = fortuneRaw.getTranslateSource();
-            List<String> koTexts = translateJaTextsToKoTexts(translateSource);
-
-            saveFortunes(fortuneRaw, koTexts);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        List<Fortune> fortunes = getFortunes(fortuneRaws, today);
+        fortuneRepository.saveAll(fortunes);
     }
 
-    private void saveFortunes(FortuneRaw fortuneRaw, List<String> koTexts) {
-        int koTextsIndex = 0;
-        List<Fortune> fortuneList = new ArrayList<>();
-        for (Element starDetail : fortuneRaw.starDetails()) {
-            String starNameJa = starDetail.selectFirst(".seiza-txt").ownText().trim();
+    private List<Fortune> getFortunes(List<FortuneRaw> fortuneRaws, LocalDate today) {
+        return fortuneRaws.stream()
+                .map(raw -> new Fortune(
+                        today,
+                        Star.findByName(raw.starName()),
+                        raw.rank(),
+                        raw.description(),
+                        raw.luckyColor(),
+                        raw.luckyKey(),
+                        raw.moneyScore(),
+                        raw.loveScore(),
+                        raw.workScore(),
+                        raw.healthScore()
+                ))
+                .toList();
+    }
 
-            Fortune fortune = new Fortune(
-                    fortuneRaw.today().toLocalDate(),
-                    Star.findStarByOriginalName(starNameJa),
-                    fortuneRaw.rankMap().get(starNameJa),
-                    koTexts.get(koTextsIndex++),
-                    koTexts.get(koTextsIndex++),
-                    koTexts.get(koTextsIndex++),
-                    starDetail.select(".icon-money").size(),
-                    starDetail.select(".icon-love").size(),
-                    starDetail.select(".icon-work").size(),
-                    starDetail.select(".icon-health").size()
-            );
-            fortuneList.add(fortune);
+    private String getFortuneRaw() {
+        try {
+            Client client = Client.builder().apiKey(fortuneConfig.apiKey()).build();
+            GenerateContentConfig config = GenerateContentConfig.builder().responseMimeType("application/json").build();
+            return client.models.generateContent(fortuneConfig.model(), fortuneConfig.prompt(), config).text();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        fortuneRepository.saveAll(fortuneList);
     }
 }

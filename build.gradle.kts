@@ -22,14 +22,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-web-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testCompileOnly("org.projectlombok:lombok")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testAnnotationProcessor("org.projectlombok:lombok")
-	implementation("org.jsoup:jsoup:1.18.1")
-	implementation("com.deepl.api:deepl-java:1.8.0")
 	implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly ("com.mysql:mysql-connector-j")
+	implementation("com.google.genai:google-genai:1.0.0")
 }
 
 tasks.withType<Test> {

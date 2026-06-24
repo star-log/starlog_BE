@@ -11,10 +11,7 @@ spring:
       ddl-auto: update
     show-sql: true
 
-deepl:
-  api-key: ${DEEPL_API_KEY}
-
 fortune:
-  fortune-url: ${FORTUNE_URL}
-  timeout: ${TIMEOUT}
-  user-agent: ${USER_AGENT}
+  prompt: ${FORTUNE_PROMPT}
+  api-key: ${GEMINI_API_KEY}
+  model: ${GEMINI_MODEL}

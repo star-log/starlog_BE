@@ -1,9 +1,6 @@
 package com.starlog_be.fortune.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -16,6 +13,7 @@ public class Fortune {
 
     private LocalDate date;
 
+    @Enumerated(EnumType.STRING)
     private Star star;
 
     private int starRank;
