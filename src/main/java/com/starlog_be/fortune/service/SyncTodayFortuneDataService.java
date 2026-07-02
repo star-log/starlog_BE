@@ -1,7 +1,9 @@
-package com.starlog_be.fortune;
+package com.starlog_be.fortune.service;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentConfig;
+import com.starlog_be.fortune.FortuneRaw;
+import com.starlog_be.fortune.FortuneRepository;
 import com.starlog_be.fortune.config.FortuneConfig;
 import com.starlog_be.fortune.domain.Fortune;
 import com.starlog_be.fortune.domain.Star;
