@@ -1,10 +1,12 @@
 package com.starlog_be.fortune.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Entity
+@Getter
 public class Fortune {
 
     @Id
