@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface FortuneRepository extends JpaRepository<Fortune, Long> {
     public List<Fortune> findByDate(LocalDate now);
+
+    public Fortune findByid(Long id);
 }
